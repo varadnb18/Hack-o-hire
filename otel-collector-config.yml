@@ -1,0 +1,107 @@
+receivers:
+  otlp:
+    protocols:
+      grpc: {}
+      http: {}
+
+processors:
+  batch: {}
+  attributes:
+    actions:
+      - key: alert.severity
+        value: "WARNING"
+        action: insert
+      - key: service.name
+        from_attribute: "service.name"
+        action: insert
+  resource:
+    attributes:
+      - key: deployment.environment
+        value: "${DEPLOYMENT_ENV}"
+        action: insert
+
+exporters:
+  debug:
+    verbosity: detailed
+  elasticsearch:
+    endpoints: ["http://elasticsearch:9200"]
+    tls:
+      insecure: true
+    logs_index: "logs-{YYYY.MM.dd}"
+    traces_index: "traces-{YYYY.MM.dd}"
+    sending_queue:
+      enabled: true
+      num_consumers: 4
+      queue_size: 1000
+
+extensions:
+  health_check: {}
+  zpages: {}
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch, attributes, resource]
+      exporters: [debug, elasticsearch]
+    logs:
+      receivers: [otlp]
+      processors: [batch, attributes, resource]
+      exporters: [elasticsearch]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [elasticsearch]
+
+  extensions: [health_check, zpages]
+  telemetry:
+    logs:
+      level: info
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# receivers:
+#   otlp:
+#     protocols:
+#       grpc: {}
+#       http: {}
+
+# exporters:
+#   debug: {}
+#   elasticsearch:
+#     endpoints: ["http://elasticsearch:9200"]
+#     tls:
+#       insecure: true
+
+# service:
+#   pipelines:
+#     traces:
+#       receivers: [otlp]
+#       exporters: [debug, elasticsearch]
+#     logs:
+#       receivers: [otlp]
+#       exporters: [elasticsearch]
