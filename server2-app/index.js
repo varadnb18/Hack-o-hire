@@ -1,4 +1,3 @@
-
 require('dotenv').config();
 const express = require('express');
 const logger = require('./logger');
@@ -8,7 +7,6 @@ const app = express();
 const port = process.env.PORT || 3001; 
 
 app.use(express.json());
-
 
 app.use((req, res, next) => {
   const start = Date.now();
@@ -34,7 +32,7 @@ app.use((req, res, next) => {
 
 
 app.get('/', (req, res) => {
-  res.send('Hello from the new API server on port 3001!');
+  res.send('Hello, OpenTelemetry & Elasticsearch from the API server on port 3001!');
 });
 
 app.get('/fail', (req, res) => {

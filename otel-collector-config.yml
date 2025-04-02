@@ -17,7 +17,7 @@ processors:
   resource:
     attributes:
       - key: deployment.environment
-        value: "${DEPLOYMENT_ENV}"
+        value: "production" 
         action: insert
 
 exporters:
@@ -57,51 +57,3 @@ service:
   telemetry:
     logs:
       level: info
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# receivers:
-#   otlp:
-#     protocols:
-#       grpc: {}
-#       http: {}
-
-# exporters:
-#   debug: {}
-#   elasticsearch:
-#     endpoints: ["http://elasticsearch:9200"]
-#     tls:
-#       insecure: true
-
-# service:
-#   pipelines:
-#     traces:
-#       receivers: [otlp]
-#       exporters: [debug, elasticsearch]
-#     logs:
-#       receivers: [otlp]
-#       exporters: [elasticsearch]

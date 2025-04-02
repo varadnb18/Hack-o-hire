@@ -1,4 +1,5 @@
 
+// index.js
 require('dotenv').config();
 const express = require('express');
 const logger = require('./logger');
@@ -7,6 +8,7 @@ const app = express();
 const port = process.env.PORT || 3000; 
 
 app.use(express.json());
+
 
 app.use((req, res, next) => {
   const start = Date.now();
@@ -30,19 +32,13 @@ app.use((req, res, next) => {
   next();
 });
 
+
 app.get('/', (req, res) => {
-  const randomValue = Math.random() * 100;
-  if (randomValue > 70 && randomValue <= 95) {
-    return res.status(404).json({ error: 'Not Found' });
-  } else if (randomValue > 95) {
-    throw new Error('Simulated API Failure');
-  }
-  res.send('Hello, OpenTelemetry & Elasticsearch!');
+  res.send('Hello, OpenTelemetry & Elasticsearch from the API server on port 3000!');
 });
 
-app.use((err, req, res, next) => {
-  logger.error(`❌ Server Error: ${req.method} ${req.originalUrl} - ${err.message}`);
-  res.status(500).json({ error: 'Internal Server Error' });
+app.get('/fail', (req, res) => {
+  throw new Error('Simulated API Failure');
 });
 
 app.listen(port, () => {
@@ -50,37 +46,6 @@ app.listen(port, () => {
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // index.js
 // require('dotenv').config();
 // const express = require('express');
 // const logger = require('./logger');
@@ -89,7 +54,6 @@ app.listen(port, () => {
 // const port = process.env.PORT || 3000; 
 
 // app.use(express.json());
-
 
 // app.use((req, res, next) => {
 //   const start = Date.now();
@@ -113,13 +77,19 @@ app.listen(port, () => {
 //   next();
 // });
 
-
 // app.get('/', (req, res) => {
+//   const randomValue = Math.random() * 100;
+//   if (randomValue > 70 && randomValue <= 95) {
+//     return res.status(404).json({ error: 'Not Found' });
+//   } else if (randomValue > 95) {
+//     throw new Error('Simulated API Failure');
+//   }
 //   res.send('Hello, OpenTelemetry & Elasticsearch!');
 // });
 
-// app.get('/fail', (req, res) => {
-//   throw new Error('Simulated API Failure');
+// app.use((err, req, res, next) => {
+//   logger.error(`❌ Server Error: ${req.method} ${req.originalUrl} - ${err.message}`);
+//   res.status(500).json({ error: 'Internal Server Error' });
 // });
 
 // app.listen(port, () => {
